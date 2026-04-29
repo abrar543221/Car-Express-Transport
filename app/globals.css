@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy: #080D1B;
+  --gold: #F5B800;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #080D1B;
+  color: #ffffff;
+  font-family: var(--font-roboto), sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .gradient-navy {
+    background: linear-gradient(135deg, #080D1B 0%, #0E1830 100%);
+  }
+  .gradient-gold {
+    background: linear-gradient(135deg, #F5B800 0%, #D9A300 100%);
+  }
+}

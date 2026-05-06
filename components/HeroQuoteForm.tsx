@@ -1,18 +1,195 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { ArrowRight, ArrowLeft, Loader2, CheckCircle, AlertCircle, MapPin } from "lucide-react";
-import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
+import { useJsApiLoader } from "@react-google-maps/api";
 
 type Condition  = "Running" | "Non-running";
 type Transport  = "Open" | "Enclosed";
 
 const LIBRARIES: ("places")[] = ["places"];
 
-const AUTO_OPTIONS: google.maps.places.AutocompleteOptions = {
-  componentRestrictions: { country: "us" },
-  types: ["(cities)"],
+/** Places predictions omit postal_code; append from Place Details when possible. */
+function formatPlaceAddress(place: google.maps.places.PlaceResult | null | undefined): string {
+  if (!place) return "";
+  const formatted = place.formatted_address?.trim() ?? "";
+  if (/\b\d{5}(-\d{4})?\b/.test(formatted)) return formatted;
+  const zip = place.address_components?.find((c) => c.types.includes("postal_code"))?.long_name;
+  if (!zip) return formatted;
+  const trimmed = formatted.replace(/,?\s*USA\s*$/i, "").trim();
+  return `${trimmed}, ${zip}, USA`;
+}
+
+function insertZipBeforeCountry(secondary: string, zip: string): string {
+  if (!zip || secondary.includes(zip)) return secondary;
+  if (/,?\s*USA\s*$/i.test(secondary)) {
+    return secondary.replace(/,?\s*USA\s*$/i, `, ${zip}, USA`);
+  }
+  return `${secondary}, ${zip}`;
+}
+
+type PlacesAddressInputProps = {
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+  required?: boolean;
+  inputClass: string;
+  isLoaded: boolean;
 };
+
+function PlacesAddressInput({
+  value,
+  onChange,
+  placeholder,
+  required,
+  inputClass,
+  isLoaded,
+}: PlacesAddressInputProps) {
+  const [open, setOpen] = useState(false);
+  const [predictions, setPredictions] = useState<google.maps.places.AutocompletePrediction[]>([]);
+  const zipCacheRef = useRef<Map<string, string>>(new Map());
+  const [, setZipTick] = useState(0);
+  const sessionTokenRef = useRef<google.maps.places.AutocompleteSessionToken | null>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const searchSeq = useRef(0);
+
+  const refreshZips = useCallback(() => setZipTick((n) => n + 1), []);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    if (!sessionTokenRef.current) {
+      sessionTokenRef.current = new google.maps.places.AutocompleteSessionToken();
+    }
+  }, [isLoaded]);
+
+  useEffect(() => {
+    const close = (e: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", close);
+    return () => document.removeEventListener("mousedown", close);
+  }, []);
+
+  useEffect(() => {
+    if (!isLoaded || !value.trim()) {
+      setPredictions([]);
+      return;
+    }
+    const seq = ++searchSeq.current;
+    const timer = window.setTimeout(() => {
+      const ac = new google.maps.places.AutocompleteService();
+      ac.getPlacePredictions(
+        {
+          input: value,
+          componentRestrictions: { country: "us" },
+          types: ["geocode"],
+          sessionToken: sessionTokenRef.current ?? undefined,
+        },
+        (results, status) => {
+          if (seq !== searchSeq.current) return;
+          if (status === google.maps.places.PlacesServiceStatus.OK && results?.length) {
+            setPredictions(results);
+            setOpen(true);
+            const placesSvc = new google.maps.places.PlacesService(document.createElement("div"));
+            for (const pred of results) {
+              if (zipCacheRef.current.has(pred.place_id)) continue;
+              placesSvc.getDetails(
+                { placeId: pred.place_id, fields: ["address_components"] },
+                (place, st) => {
+                  if (seq !== searchSeq.current) return;
+                  if (st !== google.maps.places.PlacesServiceStatus.OK || !place?.address_components) return;
+                  const zip = place.address_components.find((c) => c.types.includes("postal_code"))?.long_name;
+                  if (zip) {
+                    zipCacheRef.current.set(pred.place_id, zip);
+                    refreshZips();
+                  }
+                }
+              );
+            }
+          } else {
+            setPredictions([]);
+          }
+        }
+      );
+    }, 200);
+    return () => window.clearTimeout(timer);
+  }, [value, isLoaded, refreshZips]);
+
+  const commitSelection = useCallback(
+    (placeId: string) => {
+      const placesSvc = new google.maps.places.PlacesService(document.createElement("div"));
+      placesSvc.getDetails(
+        {
+          placeId,
+          fields: ["formatted_address", "address_components"],
+          sessionToken: sessionTokenRef.current ?? undefined,
+        },
+        (place, st) => {
+          if (st !== google.maps.places.PlacesServiceStatus.OK || !place) return;
+          onChange(formatPlaceAddress(place));
+          setOpen(false);
+          setPredictions([]);
+          sessionTokenRef.current = new google.maps.places.AutocompleteSessionToken();
+        }
+      );
+    },
+    [onChange]
+  );
+
+  return (
+    <div ref={wrapperRef} className="relative">
+      <input
+        type="text"
+        value={value}
+        placeholder={placeholder}
+        required={required}
+        autoComplete="off"
+        onChange={(e) => {
+          onChange(e.target.value);
+          setOpen(true);
+        }}
+        onFocus={() => {
+          if (predictions.length) setOpen(true);
+        }}
+        className={inputClass}
+      />
+      {open && predictions.length > 0 && (
+        <div className="absolute left-0 right-0 top-full z-[100] mt-1 overflow-hidden rounded-lg border border-white/[0.12] bg-[#1a2639] shadow-xl">
+          <ul className="max-h-60 overflow-auto py-1">
+            {predictions.map((p) => {
+              const zip = zipCacheRef.current.get(p.place_id);
+              const primary = p.structured_formatting.main_text;
+              const secondary = p.structured_formatting.secondary_text;
+              const secondaryWithZip =
+                zip && secondary ? insertZipBeforeCountry(secondary, zip) : secondary;
+              return (
+                <li key={p.place_id}>
+                  <button
+                    type="button"
+                    className="flex w-full gap-2 px-3 py-2.5 text-left text-sm text-white/90 hover:bg-white/[0.06]"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => commitSelection(p.place_id)}
+                  >
+                    <MapPin className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-orange-500/70" />
+                    <span>
+                      <span className="font-medium text-white">{primary}</span>
+                      {secondaryWithZip ? (
+                        <span className="text-white/55"> {secondaryWithZip}</span>
+                      ) : null}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="border-t border-white/[0.08] px-3 py-1.5 text-right text-[10px] text-white/35">
+            powered by Google
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function HeroQuoteForm() {
   const [step, setStep]               = useState<1 | 2>(1);
@@ -22,10 +199,6 @@ export default function HeroQuoteForm() {
   const [destination, setDestination] = useState("");
   const [status, setStatus]           = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg]       = useState("");
-
-  // Autocomplete instance refs
-  const acOriginRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const acDestRef   = useRef<google.maps.places.Autocomplete | null>(null);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_KEY ?? "",
@@ -135,23 +308,16 @@ export default function HeroQuoteForm() {
               </label>
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-orange-500/60 pointer-events-none" />
-                <Autocomplete
-                  onLoad={(ac) => { acOriginRef.current = ac; }}
-                  onPlaceChanged={() => {
-                    const place = acOriginRef.current?.getPlace();
-                    setOrigin(place?.formatted_address ?? "");
-                  }}
-                  options={AUTO_OPTIONS}
-                >
-                  <input
-                    type="text"
+                <div className="pl-9">
+                  <PlacesAddressInput
+                    isLoaded={isLoaded}
+                    value={origin}
+                    onChange={setOrigin}
                     placeholder="Origin city or ZIP"
                     required
-                    defaultValue={origin}
-                    onChange={(e) => setOrigin(e.target.value)}
-                    className={`${inputClass} pl-9`}
+                    inputClass={inputClass}
                   />
-                </Autocomplete>
+                </div>
               </div>
             </div>
 
@@ -161,23 +327,16 @@ export default function HeroQuoteForm() {
               </label>
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-orange-500/60 pointer-events-none" />
-                <Autocomplete
-                  onLoad={(ac) => { acDestRef.current = ac; }}
-                  onPlaceChanged={() => {
-                    const place = acDestRef.current?.getPlace();
-                    setDestination(place?.formatted_address ?? "");
-                  }}
-                  options={AUTO_OPTIONS}
-                >
-                  <input
-                    type="text"
+                <div className="pl-9">
+                  <PlacesAddressInput
+                    isLoaded={isLoaded}
+                    value={destination}
+                    onChange={setDestination}
                     placeholder="Destination city or ZIP"
                     required
-                    defaultValue={destination}
-                    onChange={(e) => setDestination(e.target.value)}
-                    className={`${inputClass} pl-9`}
+                    inputClass={inputClass}
                   />
-                </Autocomplete>
+                </div>
               </div>
             </div>
           </div>

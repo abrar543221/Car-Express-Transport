@@ -193,6 +193,9 @@ export async function POST(req: NextRequest) {
 
     const data = parsed.data;
 
+    const mailFrom = process.env.SMTP_FROM || "form@carexpresstransport.com";
+    const mailTo = process.env.SMTP_TO || "info@carexpresstransport.com";
+
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || "smtp.gmail.com",
       port: Number(process.env.SMTP_PORT) || 587,
@@ -208,8 +211,8 @@ export async function POST(req: NextRequest) {
       : "General Inquiry";
 
     await transporter.sendMail({
-      from: `"Car Express Transport" <${process.env.SMTP_USER}>`,
-      to: process.env.SMTP_TO || "info@carexpresstransport.com",
+      from: `"Car Express Transport" <${mailFrom}>`,
+      to: mailTo,
       replyTo: data.email,
       subject: `New Quote: ${data.fullName} — ${routeLabel}`,
       html: buildEmailHtml(data),

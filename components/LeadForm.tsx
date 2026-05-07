@@ -31,12 +31,12 @@ interface InputFieldProps {
 function InputField({ label, error, icon, required, children }: InputFieldProps) {
   return (
     <div className="space-y-1.5">
-      <label className="block text-sm font-medium text-white/80">
+      <label className="block text-sm font-medium text-slate-700">
         {label}
-        {required && <span className="text-orange-500 ml-1">*</span>}
+        {required && <span className="text-cyan-600 ml-1">*</span>}
       </label>
       <div className="relative">
-        <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none">
+        <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
           {icon}
         </div>
         {children}
@@ -98,7 +98,7 @@ export default function LeadForm() {
   };
 
   const inputClass =
-    "w-full pl-10 pr-4 py-3 bg-white/5 border border-white/15 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-orange-500 focus:bg-white/8 focus:ring-1 focus:ring-orange-500/30 transition-all duration-200 text-sm";
+    "w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-200 text-sm shadow-sm";
 
   if (status === "success") {
     return (
@@ -110,17 +110,17 @@ export default function LeadForm() {
         <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6">
           <CheckCircle className="w-10 h-10 text-green-400" />
         </div>
-        <h3 className="text-2xl font-bold font-syne text-white mb-3">
+        <h3 className="text-2xl font-bold font-syne text-slate-900 mb-3">
           You&apos;re all set!
         </h3>
-        <p className="text-white/60 text-base leading-relaxed mb-8 max-w-sm">
+        <p className="text-slate-600 text-base leading-relaxed mb-8 max-w-sm">
           Thanks! We&apos;ll be in touch within{" "}
-          <span className="text-orange-500 font-semibold">24 hours</span> with
+          <span className="text-cyan-600 font-semibold">24 hours</span> with
           your personalized shipping quote.
         </p>
         <button
           onClick={() => setStatus("idle")}
-          className="px-6 py-2.5 border border-white/20 hover:border-white/40 text-white/70 hover:text-white text-sm rounded-lg transition-all"
+          className="px-6 py-2.5 border border-slate-300 hover:border-slate-400 text-slate-600 hover:text-slate-900 text-sm rounded-lg transition-all bg-white"
         >
           Submit Another Request
         </button>
@@ -194,12 +194,12 @@ export default function LeadForm() {
       </div>
 
       <div className="space-y-1.5">
-        <label className="block text-sm font-medium text-white/80">
+        <label className="block text-sm font-medium text-slate-700">
           What are you shipping?
-          <span className="text-orange-500 ml-1">*</span>
+          <span className="text-cyan-600 ml-1">*</span>
         </label>
         <div className="relative">
-          <div className="absolute left-3.5 top-3.5 text-white/40 pointer-events-none">
+          <div className="absolute left-3.5 top-3.5 text-slate-400 pointer-events-none">
             <MessageSquare className="w-4 h-4" />
           </div>
           <textarea
@@ -234,7 +234,7 @@ export default function LeadForm() {
             className="flex items-start gap-3 p-4 bg-red-500/10 border border-red-500/20 rounded-xl"
           >
             <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-red-300">{errorMsg}</p>
+            <p className="text-sm text-red-700">{errorMsg}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -242,7 +242,7 @@ export default function LeadForm() {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full py-4 bg-orange-500 hover:bg-orange-600 disabled:opacity-70 disabled:cursor-not-allowed text-white font-bold text-base rounded-xl transition-all duration-200 shadow-xl shadow-orange-500/25 hover:shadow-orange-500/40 hover:-translate-y-0.5 flex items-center justify-center gap-2.5 group"
+        className="w-full py-4 btn-primary disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 text-base rounded-xl shadow-xl flex items-center justify-center gap-2.5 group"
       >
         {status === "loading" ? (
           <>
@@ -257,7 +257,7 @@ export default function LeadForm() {
         )}
       </button>
 
-      <p className="text-center text-xs text-white/30">
+      <p className="text-center text-xs text-slate-500">
         No spam. We&apos;ll only contact you about your quote.
       </p>
     </form>

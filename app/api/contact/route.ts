@@ -24,15 +24,15 @@ function buildEmailHtml(data: FormData): string {
     ? `
       <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
         <tr>
-          <td style="background:#fffbeb; border:1px solid #fde68a; border-radius:10px; padding:20px 24px;">
-            <p style="font-size:11px; font-weight:700; color:#d97706; text-transform:uppercase; letter-spacing:0.1em; margin:0 0 14px;">Transport Details</p>
+          <td style="background:#ecfeff; border:1px solid #a5f3fc; border-radius:10px; padding:20px 24px;">
+            <p style="font-size:11px; font-weight:700; color:#0d9488; text-transform:uppercase; letter-spacing:0.1em; margin:0 0 14px;">Transport Details</p>
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td width="45%" style="padding:0 12px 0 0;">
                   <p style="font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin:0 0 4px;">From (Origin)</p>
                   <p style="font-size:16px;font-weight:700;color:#111827;margin:0;">${data.origin || "—"}</p>
                 </td>
-                <td width="10%" style="text-align:center;font-size:20px;color:#d97706;font-weight:700;">→</td>
+                <td width="10%" style="text-align:center;font-size:20px;color:#0ea5e9;font-weight:700;">→</td>
                 <td width="45%" style="padding:0 0 0 12px;">
                   <p style="font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin:0 0 4px;">To (Destination)</p>
                   <p style="font-size:16px;font-weight:700;color:#111827;margin:0;">${data.destination || "—"}</p>
@@ -72,25 +72,25 @@ function buildEmailHtml(data: FormData): string {
   <style>
     body { font-family: Arial, sans-serif; background: #f1f5f9; margin: 0; padding: 0; }
     .wrapper { max-width: 620px; margin: 40px auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 32px rgba(0,0,0,0.10); }
-    .header { background: #080C18; padding: 32px 40px 28px; }
+    .header { background: #0f172a; padding: 32px 40px 28px; }
     .header-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-    .header-icon { width: 40px; height: 40px; background: #F5B800; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .header-icon { width: 40px; height: 40px; background: linear-gradient(135deg, #14b8a6, #0ea5e9); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
     .header h1 { color: #ffffff; margin: 0; font-size: 20px; font-weight: 800; }
-    .header h1 span { color: #F5B800; }
-    .badge { display: inline-block; background: #F5B800; color: #080C18; font-size: 11px; font-weight: 800; padding: 4px 14px; border-radius: 20px; margin-bottom: 10px; letter-spacing: 0.06em; text-transform: uppercase; }
-    .header p { color: #64748b; margin: 0; font-size: 13px; }
+    .header h1 span { color: #5eead4; }
+    .badge { display: inline-block; background: linear-gradient(90deg, #14b8a6, #0ea5e9); color: #ffffff; font-size: 11px; font-weight: 800; padding: 4px 14px; border-radius: 20px; margin-bottom: 10px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .header p { color: #94a3b8; margin: 0; font-size: 13px; }
     .body { padding: 32px 40px; }
-    .section-title { font-size: 11px; font-weight: 700; color: #F5B800; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 16px; }
+    .section-title { font-size: 11px; font-weight: 700; color: #0d9488; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 16px; }
     .field { margin-bottom: 18px; }
     .label { font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
     .value { font-size: 15px; color: #111827; font-weight: 500; }
-    .value a { color: #d97706; text-decoration: none; }
-    .message-box { background: #f9fafb; border-left: 4px solid #F5B800; border-radius: 4px; padding: 14px 18px; font-size: 14px; color: #374151; line-height: 1.65; }
+    .value a { color: #0d9488; text-decoration: none; }
+    .message-box { background: #f9fafb; border-left: 4px solid #14b8a6; border-radius: 4px; padding: 14px 18px; font-size: 14px; color: #374151; line-height: 1.65; }
     .divider { border: none; border-top: 1px solid #e5e7eb; margin: 24px 0; }
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .footer { background: #f8fafc; border-top: 1px solid #e5e7eb; padding: 20px 40px; text-align: center; font-size: 12px; color: #9ca3af; line-height: 1.6; }
-    .footer a { color: #d97706; text-decoration: none; }
-    .cta-btn { display: inline-block; background: #F5B800; color: #080C18; font-weight: 800; font-size: 13px; padding: 10px 24px; border-radius: 8px; text-decoration: none; margin-top: 8px; }
+    .footer a { color: #0d9488; text-decoration: none; }
+    .cta-btn { display: inline-block; background: linear-gradient(90deg, #14b8a6, #0ea5e9); color: #ffffff; font-weight: 800; font-size: 13px; padding: 10px 24px; border-radius: 8px; text-decoration: none; margin-top: 8px; }
   </style>
 </head>
 <body>

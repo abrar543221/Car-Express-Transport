@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 export default function RefundPolicyPage() {
   return (
     <PolicyLayout title="Refund Policy" lastUpdated="April 26, 2026">
-      <div className="space-y-6 text-white/65 leading-relaxed">
-        <p className="text-orange-400 text-sm font-medium bg-orange-500/10 border border-orange-500/20 rounded-lg px-4 py-3">
+      <div className="space-y-6 text-slate-600 leading-relaxed">
+        <p className="text-cyan-800 text-sm font-medium bg-cyan-50 border border-cyan-200/80 rounded-lg px-4 py-3">
           [PLACEHOLDER — CLIENT TO FILL] This is a template Refund Policy. Please review and update all sections with accurate information relevant to your business before publishing.
         </p>
 

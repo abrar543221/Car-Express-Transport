@@ -22,6 +22,7 @@ const config: Config = {
           800: "#112257",
           900: "#080D1B",
         },
+        /* Legacy gold — kept for rare accents; prefer teal/sky for UI */
         orange: {
           DEFAULT: "#F5B800",
           50: "#fffbeb",

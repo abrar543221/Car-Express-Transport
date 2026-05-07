@@ -154,7 +154,7 @@ function PlacesAddressInput({
         className={inputClass}
       />
       {open && predictions.length > 0 && (
-        <div className="absolute left-0 right-0 top-full z-[100] mt-1 overflow-hidden rounded-lg border border-white/[0.12] bg-[#1a2639] shadow-xl">
+        <div className="absolute left-0 right-0 top-full z-[100] mt-1 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-xl">
           <ul className="max-h-60 overflow-auto py-1">
             {predictions.map((p) => {
               const zip = zipCacheRef.current.get(p.place_id);
@@ -166,15 +166,15 @@ function PlacesAddressInput({
                 <li key={p.place_id}>
                   <button
                     type="button"
-                    className="flex w-full gap-2 px-3 py-2.5 text-left text-sm text-white/90 hover:bg-white/[0.06]"
+                    className="flex w-full gap-2 px-3 py-2.5 text-left text-sm text-slate-800 hover:bg-slate-50"
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => commitSelection(p.place_id)}
                   >
-                    <MapPin className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-orange-500/70" />
+                    <MapPin className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-cyan-600/80" />
                     <span>
-                      <span className="font-medium text-white">{primary}</span>
+                      <span className="font-medium text-slate-900">{primary}</span>
                       {secondaryWithZip ? (
-                        <span className="text-white/55"> {secondaryWithZip}</span>
+                        <span className="text-slate-500"> {secondaryWithZip}</span>
                       ) : null}
                     </span>
                   </button>
@@ -182,7 +182,7 @@ function PlacesAddressInput({
               );
             })}
           </ul>
-          <div className="border-t border-white/[0.08] px-3 py-1.5 text-right text-[10px] text-white/35">
+          <div className="border-t border-slate-100 px-3 py-1.5 text-right text-[10px] text-slate-400">
             powered by Google
           </div>
         </div>
@@ -246,25 +246,24 @@ export default function HeroQuoteForm() {
   };
 
   const inputClass =
-    "w-full px-4 py-3 bg-[#141E30] border border-white/[0.09] rounded-lg text-white text-sm " +
-    "placeholder-white/25 focus:outline-none focus:border-orange-500/50 focus:ring-1 " +
-    "focus:ring-orange-500/15 transition-all";
+    "w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-slate-900 text-sm shadow-sm " +
+    "placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/15 transition-all";
 
   /* ── Success state ── */
   if (status === "success") {
     return (
       <div className="flex flex-col items-center justify-center py-8 text-center">
-        <div className="w-14 h-14 bg-green-500/15 rounded-full flex items-center justify-center mb-4">
-          <CheckCircle className="w-7 h-7 text-green-400" />
+        <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-4">
+          <CheckCircle className="w-7 h-7 text-green-600" />
         </div>
-        <h3 className="text-lg font-bold text-white mb-2">Quote Request Submitted!</h3>
-        <p className="text-white/55 text-sm leading-relaxed mb-5">
+        <h3 className="text-lg font-bold text-slate-900 mb-2">Quote Request Submitted!</h3>
+        <p className="text-slate-600 text-sm leading-relaxed mb-5">
           Our team will contact you within{" "}
-          <span className="text-orange-500 font-semibold">24 hours</span> with your free quote.
+          <span className="text-cyan-600 font-semibold">24 hours</span> with your free quote.
         </p>
         <button
           onClick={() => { setStatus("idle"); setStep(1); setOrigin(""); setDestination(""); }}
-          className="text-sm text-white/40 hover:text-white/70 transition-colors underline underline-offset-2"
+          className="text-sm text-slate-500 hover:text-slate-800 transition-colors underline underline-offset-2"
         >
           Submit another request
         </button>
@@ -277,19 +276,19 @@ export default function HeroQuoteForm() {
     return (
       <div className="space-y-3.5 animate-pulse">
         <div className="grid grid-cols-2 gap-3">
-          <div className="h-11 bg-white/5 rounded-lg" />
-          <div className="h-11 bg-white/5 rounded-lg" />
+          <div className="h-11 bg-slate-100 rounded-lg" />
+          <div className="h-11 bg-slate-100 rounded-lg" />
         </div>
-        <div className="h-11 bg-white/5 rounded-lg" />
+        <div className="h-11 bg-slate-100 rounded-lg" />
         <div className="grid grid-cols-2 gap-2">
-          <div className="h-11 bg-white/5 rounded-lg" />
-          <div className="h-11 bg-white/5 rounded-lg" />
+          <div className="h-11 bg-slate-100 rounded-lg" />
+          <div className="h-11 bg-slate-100 rounded-lg" />
         </div>
         <div className="grid grid-cols-2 gap-2">
-          <div className="h-11 bg-white/5 rounded-lg" />
-          <div className="h-11 bg-white/5 rounded-lg" />
+          <div className="h-11 bg-slate-100 rounded-lg" />
+          <div className="h-11 bg-slate-100 rounded-lg" />
         </div>
-        <div className="h-12 bg-orange-500/20 rounded-lg" />
+        <div className="h-12 bg-gradient-to-r from-teal-200 to-sky-200 rounded-lg" />
       </div>
     );
   }
@@ -303,11 +302,11 @@ export default function HeroQuoteForm() {
           {/* FROM / TO — Google Autocomplete */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1.5">
+              <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500 mb-1.5">
                 From
               </label>
               <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-orange-500/60 pointer-events-none" />
+                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-cyan-600/70 pointer-events-none" />
                 <div className="pl-9">
                   <PlacesAddressInput
                     isLoaded={isLoaded}
@@ -322,11 +321,11 @@ export default function HeroQuoteForm() {
             </div>
 
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1.5">
+              <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500 mb-1.5">
                 To
               </label>
               <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-orange-500/60 pointer-events-none" />
+                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-cyan-600/70 pointer-events-none" />
                 <div className="pl-9">
                   <PlacesAddressInput
                     isLoaded={isLoaded}
@@ -343,7 +342,7 @@ export default function HeroQuoteForm() {
 
           {/* Vehicle Condition */}
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-2">
+            <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500 mb-2">
               Vehicle Condition
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -354,8 +353,8 @@ export default function HeroQuoteForm() {
                   onClick={() => setCondition(opt)}
                   className={`py-3 rounded-lg text-sm font-bold transition-all duration-200 ${
                     condition === opt
-                      ? "bg-orange-500 text-white shadow-sm shadow-orange-500/30"
-                      : "bg-[#141E30] text-white/40 border border-white/[0.08] hover:text-white/65"
+                      ? "bg-gradient-to-r from-teal-500 to-sky-500 text-white shadow-md shadow-cyan-500/20"
+                      : "bg-slate-100 text-slate-500 border border-slate-200 hover:text-slate-800 hover:border-slate-300"
                   }`}
                 >
                   {opt}
@@ -366,7 +365,7 @@ export default function HeroQuoteForm() {
 
           {/* Transport Type */}
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-white/40 mb-2">
+            <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500 mb-2">
               Transport Type
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -377,8 +376,8 @@ export default function HeroQuoteForm() {
                   onClick={() => setTransport(opt)}
                   className={`py-3 rounded-lg text-sm font-bold transition-all duration-200 ${
                     transport === opt
-                      ? "bg-orange-500 text-white shadow-sm shadow-orange-500/30"
-                      : "bg-[#141E30] text-white/40 border border-white/[0.08] hover:text-white/65"
+                      ? "bg-gradient-to-r from-teal-500 to-sky-500 text-white shadow-md shadow-cyan-500/20"
+                      : "bg-slate-100 text-slate-500 border border-slate-200 hover:text-slate-800 hover:border-slate-300"
                   }`}
                 >
                   {opt}
@@ -390,13 +389,13 @@ export default function HeroQuoteForm() {
           {/* CTA */}
           <button
             type="submit"
-            className="w-full py-4 bg-orange-500 hover:bg-orange-400 text-white font-black text-[15px] rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/35 hover:-translate-y-0.5 group"
+            className="w-full py-4 btn-primary font-black text-[15px] rounded-lg flex items-center justify-center gap-2 shadow-lg group"
           >
             Get Free Quote
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
 
-          <p className="text-center text-[11px] text-white/25 leading-relaxed">
+          <p className="text-center text-[11px] text-slate-400 leading-relaxed">
             By submitting, you consent to receive SMS and emails. Reply STOP to opt-out.
           </p>
         </form>
@@ -407,24 +406,26 @@ export default function HeroQuoteForm() {
         <form onSubmit={handleSubmit} className="space-y-3.5">
 
           {/* Route summary pill */}
-          <div className="flex items-center gap-2 px-3.5 py-2.5 bg-orange-500/10 border border-orange-500/20 rounded-lg">
-            <div className="flex-1 text-xs text-white/65 truncate">
-              <span className="text-orange-400 font-semibold">{origin}</span>
-              <span className="text-white/35 mx-2">→</span>
-              <span className="text-orange-400 font-semibold">{destination}</span>
-              <span className="text-white/30 mx-2">·</span>
-              <span className="text-white/50">{condition} · {transport}</span>
+          <div className="flex items-center gap-2 px-3.5 py-2.5 bg-cyan-50 border border-cyan-100 rounded-lg">
+            <div className="flex-1 text-xs text-slate-600 truncate">
+              <span className="text-cyan-700 font-semibold">{origin}</span>
+              <span className="text-slate-400 mx-2">→</span>
+              <span className="text-cyan-700 font-semibold">{destination}</span>
+              <span className="text-slate-300 mx-2">·</span>
+              <span className="text-slate-500">
+                {condition} · {transport}
+              </span>
             </div>
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="text-white/35 hover:text-white/65 transition-colors flex-shrink-0"
+              className="text-slate-400 hover:text-slate-700 transition-colors flex-shrink-0"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          <p className="text-white/45 text-xs text-center pb-1">
+          <p className="text-slate-500 text-xs text-center pb-1">
             Enter your contact info to receive your free quote.
           </p>
 
@@ -455,16 +456,16 @@ export default function HeroQuoteForm() {
           />
 
           {status === "error" && (
-            <div className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-              <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
-              <p className="text-xs text-red-300">{errorMsg}</p>
+            <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+              <p className="text-xs text-red-800">{errorMsg}</p>
             </div>
           )}
 
           <button
             type="submit"
             disabled={status === "loading"}
-            className="w-full py-4 bg-orange-500 hover:bg-orange-400 disabled:opacity-70 disabled:cursor-not-allowed text-white font-black text-[15px] rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/35 hover:-translate-y-0.5 group"
+            className="w-full py-4 btn-primary disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 font-black text-[15px] rounded-lg flex items-center justify-center gap-2 shadow-lg group"
           >
             {status === "loading" ? (
               <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</>
@@ -473,7 +474,7 @@ export default function HeroQuoteForm() {
             )}
           </button>
 
-          <p className="text-center text-[11px] text-white/25">
+          <p className="text-center text-[11px] text-slate-400">
             No spam. We&apos;ll only contact you about your quote.
           </p>
         </form>

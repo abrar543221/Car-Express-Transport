@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --navy: #080D1B;
-  --gold: #F5B800;
+  --surface-muted: #f8fafc;
+  --border-soft: #e2e8f0;
 }
 
 html {
@@ -12,19 +12,22 @@ html {
 }
 
 body {
-  background-color: #080D1B;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #0f172a;
   font-family: var(--font-roboto), sans-serif;
+}
+
+@layer components {
+  /* Bright teal → sky blue primary actions */
+  .btn-primary {
+    @apply text-white font-bold transition-all duration-200;
+    @apply bg-gradient-to-r from-teal-500 to-sky-500 shadow-lg shadow-cyan-500/20;
+    @apply hover:from-teal-600 hover:to-sky-600 hover:shadow-cyan-500/30 hover:-translate-y-0.5;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
-  }
-  .gradient-navy {
-    background: linear-gradient(135deg, #080D1B 0%, #0E1830 100%);
-  }
-  .gradient-gold {
-    background: linear-gradient(135deg, #F5B800 0%, #D9A300 100%);
   }
 }
